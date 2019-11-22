@@ -58,7 +58,5 @@ public class BookController implements Operations<Book> {
 	public List<Book> listarPeloAno(Book ano) {
 		return dao.listarPeloAno(ano);
 	}
-
-	
 	
 }
