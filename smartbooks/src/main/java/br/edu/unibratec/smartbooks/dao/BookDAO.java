@@ -21,7 +21,7 @@ public class BookDAO implements Operations<Book> {
 	}
 
 	@Override
-	public void inserir(Book livro) {
+	public String inserir(Book livro) {
 
 		Session connection = sessionFactory.openSession();
 		connection.beginTransaction();
@@ -29,11 +29,11 @@ public class BookDAO implements Operations<Book> {
 		connection.save(livro);
 		connection.getTransaction().commit();
 		connection.close();
-		System.out.println("incluido com sucesso.");
+		return "Cadastrado com sucesso!";
 	}
 
 	@Override
-	public void deletar(int id) {
+	public String deletar(int id) {
 
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
@@ -43,10 +43,13 @@ public class BookDAO implements Operations<Book> {
 
 		session.getTransaction().commit();
 		session.close();
+		return "Deletado com sucesso!";
+		
 	}
 
 	@Override
-	public void atualizar(Book livro) {
+	public String atualizar(Book livro) {
+		
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -54,6 +57,7 @@ public class BookDAO implements Operations<Book> {
 
 		session.getTransaction().commit();
 		session.close();
+		return "Editado com sucesso!";
 	}
 
 	@Override
@@ -69,19 +73,16 @@ public class BookDAO implements Operations<Book> {
 	@Override
 	public List<Book> listarPeloId(int id) {
 
+		List<Book> result = new ArrayList<Book>();
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		Book livro = session.get(Book.class, id);
-
-		session.getTransaction().commit();
+		result = session.createQuery("from Book where Id = " + id).list();
 		session.close();
+		return result;
 
-		return livro;
 	}
 
 	@Override
-	public List<Book> listarPeloTitulo(Book titulo) {
+	public List<Book> listarPeloTitulo(String titulo) {
 
 		List<Book> result = new ArrayList<Book>();
 		Session session = sessionFactory.openSession();
@@ -92,7 +93,7 @@ public class BookDAO implements Operations<Book> {
 	}
 
 	@Override
-	public List<Book> listarPeloAutor(Book autor) {
+	public List<Book> listarPeloAutor(String autor) {
 		List<Book> result = new ArrayList<Book>();
 		Session session = sessionFactory.openSession();
 		result = session.createQuery("from Book where Autor LIKE '%" + autor + "%'").list();
@@ -101,7 +102,7 @@ public class BookDAO implements Operations<Book> {
 	}
 
 	@Override
-	public List<Book> listarPelaEditora(Book editora) {
+	public List<Book> listarPelaEditora(String editora) {
 		List<Book> result = new ArrayList<Book>();
 		Session session = sessionFactory.openSession();
 		result = session.createQuery("from Book where Editora LIKE '%" + editora + "%'").list();
@@ -110,7 +111,7 @@ public class BookDAO implements Operations<Book> {
 	}
 
 	@Override
-	public List<Book> listarPeloAno(Book ano) {
+	public List<Book> listarPeloAno(String ano) {
 		List<Book> result = new ArrayList<Book>();
 		Session session = sessionFactory.openSession();
 		result = session.createQuery("from Book where Ano LIKE '%" + ano + "%'").list();
@@ -118,6 +119,5 @@ public class BookDAO implements Operations<Book> {
 		return result;
 	}
 
-//	anch
-
 }
+

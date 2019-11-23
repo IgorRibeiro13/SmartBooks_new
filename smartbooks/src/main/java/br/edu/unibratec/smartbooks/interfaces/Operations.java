@@ -5,11 +5,11 @@ import java.util.List;
 public interface Operations<Book> {
 	
 
-		public void inserir(Book livro);
+		public String inserir(Book livro);
 
-		public void deletar(int id);
+		public String deletar(int id);
 
-		public void atualizar(Book livro);
+		public String atualizar(Book livro);
 
 		public List<Book> listarTodos();
 
@@ -19,8 +19,8 @@ public interface Operations<Book> {
 		
 		public List<Book> listarPeloAutor(String autor);
 		
-		public List<Book> listarPelaEditora(Book editora);
+		public List<Book> listarPelaEditora(String editora);
 		
-		public List<Book> listarPeloAno(Book ano);
+		public List<Book> listarPeloAno(String ano);
 
 }

@@ -23,16 +23,16 @@ public class BookOperationsFacade {
 		return instancia;
 	}
 
-	public void cadastrarLivro(Book livro) {
-		bookController.inserir(livro);
+	public String cadastrarLivro(Book livro) {
+		return bookController.inserir(livro);
 	}
 
-	public void removerLivro(int id) {
-		bookController.deletar(id);
+	public String removerLivro(int id) {
+		return bookController.deletar(id);
 	}
 
-	public void atualizarLivro(Book livro) {
-		bookController.atualizar(livro);
+	public String atualizarLivro(Book livro) {
+		return bookController.atualizar(livro);
 	}
 
 	public List<Book> pesquisarLivros() {
@@ -51,11 +51,11 @@ public class BookOperationsFacade {
 		return bookController.listarPeloAutor(autor);
 	}
 
-	public List<Book> pesquisarLivroPelaEditora(Book editora) {
+	public List<Book> pesquisarLivroPelaEditora(String editora) {
 		return bookController.listarPelaEditora(editora);
 	}
 
-	public List<Book> pesquisarLivroPeloAno(Book ano) {
+	public List<Book> pesquisarLivroPeloAno(String ano) {
 		return bookController.listarPeloAno(ano);
 	}
 

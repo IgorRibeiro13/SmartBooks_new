@@ -18,13 +18,16 @@ public class OperationsView {
 	BookOperationsFacade facade = BookOperationsFacade.getInstancia();
 
 	BookValidationUtil bookUtil = new BookValidationUtil();
+
+//	String titulo = null;
+//	String autor = null;
+//	String editora = null;
+//	String ano = null;
+//	String url = null;
+//	String tamanho = null;
+//	String tipo = null;
 	
-	String titulo = null;
-	String autor = null;
-	String editora = null;
-	String ano = null;
-	String url = null;
-	String tamanho = null;
+	Book livro = new Book();
 
 	public void menu() {
 		String value;
@@ -45,7 +48,7 @@ public class OperationsView {
 
 			boolean validacao = bookUtil.validarMenu(value);
 
-			if (validacao == true) {
+			if (validacao) {
 				int opcao = Integer.parseInt(value);
 				if (opcao >= 0 && opcao <= 4) {
 					opcoesMenu(opcao);
@@ -126,13 +129,12 @@ public class OperationsView {
 	}
 
 	private void menuAdicionar(int opcoesAdicionar) {
-		Book livro = new Book();
 		
-
 		switch (opcoesAdicionar) {
 		case 1:
 			System.out.print("Digite o titulo do livro:");
-			titulo = scanner.nextLine();
+			String titulo = scanner.nextLine();
+			livro.setTitulo(titulo);
 			System.out.println("");
 			System.out.println("Titulo adicionado com sucesso!");
 			System.out.println("");
@@ -141,7 +143,8 @@ public class OperationsView {
 			break;
 		case 2:
 			System.out.print("Digite o nome do Autor: ");
-			autor = scanner.nextLine();
+			String autor = scanner.nextLine();
+			livro.setAutor(autor);
 			System.out.println("");
 			System.out.println("Autor adicionado com sucesso!");
 			System.out.println("");
@@ -150,7 +153,8 @@ public class OperationsView {
 			break;
 		case 3:
 			System.out.print("Digite o nome da Editora: ");
-			editora = scanner.nextLine();
+			String editora = scanner.nextLine();
+			livro.setEditora(editora);
 			System.out.println("");
 			System.out.println("Editora adicionada com sucesso!");
 			System.out.println("");
@@ -160,7 +164,8 @@ public class OperationsView {
 		case 4:
 			System.out.println("");
 			System.out.print("Digite o ano de publicação: ");
-			ano = scanner.nextLine();
+			String ano = scanner.nextLine();
+			livro.setAno(ano);
 			System.out.println("");
 			System.out.println("Ano adicionada com sucesso!");
 			System.out.println("");
@@ -169,7 +174,8 @@ public class OperationsView {
 			break;
 		case 5:
 			System.out.print("Informe o URL: ");
-			url = scanner.nextLine();
+			String url = scanner.nextLine();
+			livro.setUrl(url);
 			System.out.println("");
 			System.out.println("URL adicionada com sucesso!");
 			System.out.println("");
@@ -178,7 +184,8 @@ public class OperationsView {
 			break;
 		case 6:
 			System.out.print("Informe o tamanho do livro em MB: ");
-			tamanho = scanner.nextLine();
+			String tamanho = scanner.nextLine();
+			livro.setTamanho(tamanho);
 			System.out.println("");
 			System.out.println("tamanho adicionada com sucesso!");
 			System.out.println("");
@@ -188,26 +195,29 @@ public class OperationsView {
 		case 7:
 			System.out.println("Digite o tipo do livro: ");
 			System.out.println("------------------------");
-			System.out.println("1- Livro Fisico");
-			System.out.println("2- eBook");
+			System.out.println("Livro Fisico");
+			System.out.println("eBook");
 			System.out.println("------------------------");
+			String tipo = scanner.nextLine();
+			livro.setTipo(tipo);
 			exibirMenuAdicionar();
 
 			break;
 		case 8:
-			livro.setTitulo(titulo);
-			livro.setAutor(autor);
-			livro.setEditora(editora);
-			livro.setAno(ano);
-			livro.setUrl(url);
-			livro.setTamanho(tamanho);
-			facade.cadastrarLivro(livro);
+			verificaECadastraLivro(livro);
 			menu();
 			break;
 		default:
 			break;
 		}
 
+	}
+	
+	private void verificaECadastraLivro(Book livro) {
+		String result = facade.cadastrarLivro(livro);
+		if (!result.equalsIgnoreCase("sucesso")) {
+			System.out.println(result);
+		}
 	}
 
 	private void excluirLivroPeloId() {
@@ -264,7 +274,7 @@ public class OperationsView {
 			System.out.println("");
 			System.out.print("Digite o ID do livro");
 
-//			livros = facade.pesquisarLivroPeloId(id);
+			// livros = facade.pesquisarLivroPeloId(id);
 			break;
 		case 3:
 			System.out.println("");
@@ -285,7 +295,7 @@ public class OperationsView {
 			livros = facade.pesquisarLivroPeloAutor(editora);
 			break;
 		case 6:
-//			listarPeloAno();
+			// listarPeloAno();
 
 		default:
 			System.out.println("opção inválida! ");
@@ -310,5 +320,4 @@ public class OperationsView {
 		System.out.println("------------------");
 		System.exit(0);
 	}
-
 }

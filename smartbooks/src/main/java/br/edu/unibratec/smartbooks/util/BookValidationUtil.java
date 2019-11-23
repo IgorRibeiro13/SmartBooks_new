@@ -3,17 +3,13 @@ package br.edu.unibratec.smartbooks.util;
 import java.time.LocalDateTime;
 
 public class BookValidationUtil {
-	LocalDateTime anoAtual = LocalDateTime.now();
-	
 	
 
 	public static boolean validarString(String value) {
 
 		boolean validation = false;
-		if (value.equals("")) {
-			System.out.println("-----------------------");
-			System.out.println("Campo digitado inválido");
-			System.out.println("-----------------------");
+		if (value.equals("") || value.isEmpty() || value == null) {
+			validation = false;
 		} else {
 			validation = true;
 		}
@@ -39,6 +35,9 @@ public class BookValidationUtil {
 		return valid;
 
 	}
+
+	
+
 
 	public static boolean validarAno(int ano) {
 		return false;
