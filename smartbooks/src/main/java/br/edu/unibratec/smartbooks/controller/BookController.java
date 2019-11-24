@@ -6,10 +6,9 @@ import java.util.List;
 import br.edu.unibratec.smartbooks.dao.BookDAO;
 import br.edu.unibratec.smartbooks.interfaces.Operations;
 import br.edu.unibratec.smartbooks.model.Book;
+import br.edu.unibratec.smartbooks.util.BookValidationUtil;
 
 public class BookController implements Operations<Book> {
-
-	LocalDateTime anoAtual = LocalDateTime.now();
 
 	private BookDAO dao;
 
@@ -21,42 +20,50 @@ public class BookController implements Operations<Book> {
 	public String inserir(Book livro) {
 
 		String message = validarCampos(livro);
-		if (message.equalsIgnoreCase("sucesso")) {
+		if (message.equalsIgnoreCase("Sucesso")) {
 			return dao.inserir(livro);
 		} else {
 			return message;
 		}
 
-
 	}
 
 	private String validarCampos(Book livro) {
-		String message = "sucesso";
 
-		if (livro.getAno().isEmpty() && livro.getAutor().isEmpty() && livro.getEditora().isEmpty()
-				&& livro.getTamanho().isEmpty() && livro.getTipo().isEmpty() && livro.getTitulo().isEmpty()
-				&& livro.getUrl().isEmpty()) {
-			return "favor preencher ao menos um campo";
+		String message = "Sucesso";
+
+		if (livro.getAno() == null && livro.getAutor() == null && livro.getEditora() == null
+				&& livro.getTamanho() == null && livro.getTipo() == null && livro.getTitulo() == null
+				&& livro.getUrl() == null) {
+			return "Favor preencher ao menos um campo";
+
+		}
+		
+		// depois fazer um metodo para concatenar strings e dizer quais campos foram deixados invalidos
+		if (livro.getTitulo().trim().length() == 0 || livro.getAno().trim().length() == 0 || livro.getAutor().trim().length() == 0 ||
+				livro.getEditora().trim().length() == 0 || livro.getTamanho().trim().length() == 0 || livro.getTipo().trim().length() == 0 ||
+				livro.getUrl().trim().length() == 0) {
+			
+			return "Existêm campos inválidos, favor preencher corretamente";
 		}
 
-		if (!livro.getAno().isEmpty()) {
-			try {
-				int ano = Integer.parseInt(livro.getAno());
-
-				if (ano < 0 || ano > anoAtual.getYear()) {
-					message = "Digite um ano entre 0 e " + anoAtual.getYear();
-				}
-			} catch (Exception e) {
-				return "Digite um ano entre 0 e " + anoAtual.getYear();
-			}
+		if (livro.getAno() != null) {
+			message = BookValidationUtil.validarAno(livro.getAno());
+			
 		}
 
-		if (!livro.getAutor().isEmpty() && livro.getAutor().trim().length() < 3) {
-			return "nome do autor inválido!";
+		if (livro.getAutor() != null && livro.getAutor().trim().length() <= 3) {
+			return "Autor inválido!";
+		}
+		
+		if (livro.getTipo() != null) {
+			return BookValidationUtil.validarTipo(livro.getTipo());
 		}
 
 		return message;
 	}
+	
+	
 
 	@Override
 	public String deletar(int id) {
@@ -100,9 +107,4 @@ public class BookController implements Operations<Book> {
 		return dao.listarPeloAno(ano);
 	}
 
-<<<<<<< Updated upstream
-	
-	
-=======
->>>>>>> Stashed changes
 }

@@ -26,7 +26,7 @@ public class OperationsView {
 //	String url = null;
 //	String tamanho = null;
 //	String tipo = null;
-	
+
 	Book livro = new Book();
 
 	public void menu() {
@@ -129,7 +129,7 @@ public class OperationsView {
 	}
 
 	private void menuAdicionar(int opcoesAdicionar) {
-		
+
 		switch (opcoesAdicionar) {
 		case 1:
 			System.out.print("Digite o titulo do livro:");
@@ -195,8 +195,8 @@ public class OperationsView {
 		case 7:
 			System.out.println("Digite o tipo do livro: ");
 			System.out.println("------------------------");
-			System.out.println("Livro Fisico");
-			System.out.println("eBook");
+			System.out.println("1- Livro Fisico");
+			System.out.println("2- eBook");
 			System.out.println("------------------------");
 			String tipo = scanner.nextLine();
 			livro.setTipo(tipo);
@@ -212,12 +212,12 @@ public class OperationsView {
 		}
 
 	}
-	
+
 	private void verificaECadastraLivro(Book livro) {
 		String result = facade.cadastrarLivro(livro);
-		if (!result.equalsIgnoreCase("sucesso")) {
-			System.out.println(result);
-		}
+		System.out.println(result);
+		menu();
+
 	}
 
 	private void excluirLivroPeloId() {
@@ -310,6 +310,8 @@ public class OperationsView {
 			System.out.println("Tipo: " + livro.getTipo());
 			System.out.println("URL: " + livro.getUrl());
 			System.out.println("Tamanho: " + livro.getTamanho());
+
+			menu();
 		}
 
 	}

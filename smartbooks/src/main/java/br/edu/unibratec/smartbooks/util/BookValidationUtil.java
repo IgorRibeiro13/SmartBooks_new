@@ -3,7 +3,8 @@ package br.edu.unibratec.smartbooks.util;
 import java.time.LocalDateTime;
 
 public class BookValidationUtil {
-	
+
+	static LocalDateTime anoAtual = LocalDateTime.now();
 
 	public static boolean validarString(String value) {
 
@@ -36,34 +37,28 @@ public class BookValidationUtil {
 
 	}
 
-	
+	public static String validarAno(String ano) {
 
+		try {
+			int numero = Integer.parseInt(ano);
+			if (numero > 0 && numero <= anoAtual.getYear()) {
+				return "Sucesso";
+			} else {
+				return "Digite um ano entre 0 e " + anoAtual.getYear();
 
-	public static boolean validarAno(int ano) {
-		return false;
-//		try {
-//			int numero = Integer.parseInt(ano);
-//			if (numero > 0 && numero <= anoAtual.getYear) {
-//				livro.setTitulo(ano);
-//				System.out.println("");
-//				System.out.println("Ano adicionado com sucesso!");
-//				System.out.println("");
-//				resultado = true;
-//				exibirMenuAdicionar();
-//			} else {
-//				System.out.println("");
-//				System.out.println("O ano digitado é inválido!");
-//				System.out.println("Digite um ano entre 0 e " + anoAtual.getYear());
-//				System.out.println("");
-//
-//			}
-//
-//		} catch (Exception e) {
-//			System.out.println("------------------");
-//			System.out.println("Caractere inválido");
-//			System.out.println("------------------");
-//
-//		}
+			}
+
+		} catch (Exception e) {
+
+			return "O caractére digitado no ano é inválido, digite apenas números!";
+
+		}
+	}
+
+	public static String validarTipo(String tipo) {
+		
+		
+		return null;
 	}
 
 }

@@ -22,14 +22,16 @@ public class BookDAO implements Operations<Book> {
 
 	@Override
 	public String inserir(Book livro) {
-
+		
 		Session connection = sessionFactory.openSession();
 		connection.beginTransaction();
 
 		connection.save(livro);
 		connection.getTransaction().commit();
 		connection.close();
+		
 		return "Cadastrado com sucesso!";
+
 	}
 
 	@Override
