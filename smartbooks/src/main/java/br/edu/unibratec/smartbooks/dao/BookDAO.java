@@ -22,14 +22,14 @@ public class BookDAO implements Operations<Book> {
 
 	@Override
 	public String inserir(Book livro) {
-		
+
 		Session connection = sessionFactory.openSession();
 		connection.beginTransaction();
 
 		connection.save(livro);
 		connection.getTransaction().commit();
 		connection.close();
-		
+
 		return "Cadastrado com sucesso!";
 
 	}
@@ -46,12 +46,12 @@ public class BookDAO implements Operations<Book> {
 		session.getTransaction().commit();
 		session.close();
 		return "Deletado com sucesso!";
-		
+
 	}
 
 	@Override
 	public String atualizar(Book livro) {
-		
+
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -72,7 +72,6 @@ public class BookDAO implements Operations<Book> {
 		return result;
 	}
 
-	@Override
 	public List<Book> listarPeloId(int id) {
 
 		List<Book> result = new ArrayList<Book>();
@@ -122,4 +121,3 @@ public class BookDAO implements Operations<Book> {
 	}
 
 }
-

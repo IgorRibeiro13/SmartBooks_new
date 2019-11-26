@@ -39,25 +39,23 @@ public class BookController implements Operations<Book> {
 
 		}
 		
-		// depois fazer um metodo para concatenar strings e dizer quais campos foram deixados invalidos
-		if (livro.getTitulo().trim().length() == 0 || livro.getAno().trim().length() == 0 || livro.getAutor().trim().length() == 0 ||
-				livro.getEditora().trim().length() == 0 || livro.getTamanho().trim().length() == 0 || livro.getTipo().trim().length() == 0 ||
-				livro.getUrl().trim().length() == 0) {
-			
-			return "Existêm campos inválidos, favor preencher corretamente";
-		}
 
 		if (livro.getAno() != null) {
 			message = BookValidationUtil.validarAno(livro.getAno());
 			
 		}
+		
+		if (livro.getTipo() != null) {
+			message = BookValidationUtil.validarTipo(livro.getTipo());
+			 if (message == "Sucesso" && livro.getTipo() == "1") {
+				 livro.setTipo("Fisico");	 
+			 }else {
+				 livro.setTipo("eBook");
+			 }
+		}
 
 		if (livro.getAutor() != null && livro.getAutor().trim().length() <= 3) {
 			return "Autor inválido!";
-		}
-		
-		if (livro.getTipo() != null) {
-			return BookValidationUtil.validarTipo(livro.getTipo());
 		}
 
 		return message;
@@ -67,8 +65,11 @@ public class BookController implements Operations<Book> {
 
 	@Override
 	public String deletar(int id) {
-		dao.deletar(id);
-		return null;
+		return dao.deletar(id);
+		
+		
+		
+
 	}
 
 	@Override

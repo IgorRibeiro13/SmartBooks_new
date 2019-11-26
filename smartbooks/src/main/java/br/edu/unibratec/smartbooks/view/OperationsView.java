@@ -19,14 +19,6 @@ public class OperationsView {
 
 	BookValidationUtil bookUtil = new BookValidationUtil();
 
-//	String titulo = null;
-//	String autor = null;
-//	String editora = null;
-//	String ano = null;
-//	String url = null;
-//	String tamanho = null;
-//	String tipo = null;
-
 	Book livro = new Book();
 
 	public void menu() {
@@ -91,8 +83,10 @@ public class OperationsView {
 	}
 
 	public void exibirMenuAdicionar() {
+
 		String value;
 		boolean resultado = false;
+		int opcaoAdicionar = 0;
 
 		while (!resultado) {
 			System.out.println("");
@@ -112,7 +106,7 @@ public class OperationsView {
 			boolean validacao = bookUtil.validarMenu(value);
 
 			if (validacao == true) {
-				int opcaoAdicionar = Integer.parseInt(value);
+				opcaoAdicionar = Integer.parseInt(value);
 				if (opcaoAdicionar >= 1 && opcaoAdicionar <= 8) {
 					menuAdicionar(opcaoAdicionar);
 					resultado = true;
@@ -126,18 +120,14 @@ public class OperationsView {
 				}
 			}
 		}
-	}
-
-	private void menuAdicionar(int opcoesAdicionar) {
-
-		switch (opcoesAdicionar) {
+		switch (opcaoAdicionar) {
 		case 1:
 			System.out.print("Digite o titulo do livro:");
 			String titulo = scanner.nextLine();
 			livro.setTitulo(titulo);
 			System.out.println("");
 			System.out.println("Titulo adicionado com sucesso!");
-			System.out.println("");
+			System.out.println("");	
 			exibirMenuAdicionar();
 
 			break;
@@ -147,7 +137,7 @@ public class OperationsView {
 			livro.setAutor(autor);
 			System.out.println("");
 			System.out.println("Autor adicionado com sucesso!");
-			System.out.println("");
+			System.out.println("");		
 			exibirMenuAdicionar();
 
 			break;
@@ -162,12 +152,11 @@ public class OperationsView {
 
 			break;
 		case 4:
-			System.out.println("");
 			System.out.print("Digite o ano de publicação: ");
 			String ano = scanner.nextLine();
 			livro.setAno(ano);
 			System.out.println("");
-			System.out.println("Ano adicionada com sucesso!");
+			System.out.println("Ano adicionado com sucesso!");
 			System.out.println("");
 			exibirMenuAdicionar();
 
@@ -177,7 +166,7 @@ public class OperationsView {
 			String url = scanner.nextLine();
 			livro.setUrl(url);
 			System.out.println("");
-			System.out.println("URL adicionada com sucesso!");
+			System.out.println("URL adicionado com sucesso!");
 			System.out.println("");
 			exibirMenuAdicionar();
 
@@ -187,7 +176,7 @@ public class OperationsView {
 			String tamanho = scanner.nextLine();
 			livro.setTamanho(tamanho);
 			System.out.println("");
-			System.out.println("tamanho adicionada com sucesso!");
+			System.out.println("tamanho adicionado com sucesso!");
 			System.out.println("");
 			exibirMenuAdicionar();
 
@@ -200,22 +189,39 @@ public class OperationsView {
 			System.out.println("------------------------");
 			String tipo = scanner.nextLine();
 			livro.setTipo(tipo);
+			System.out.println("");
+			System.out.println("Tipo adicionado com sucesso!");
+			System.out.println("");
 			exibirMenuAdicionar();
 
 			break;
 		case 8:
+
 			verificaECadastraLivro(livro);
-			menu();
 			break;
 		default:
 			break;
 		}
+	}
+
+	private void menuAdicionar(int opcoesAdicionar) {
 
 	}
 
 	private void verificaECadastraLivro(Book livro) {
-		String result = facade.cadastrarLivro(livro);
-		System.out.println(result);
+		String resultValidation = BookValidationUtil.validarCamposVazios(livro);
+		
+		if (resultValidation == "sucesso") {
+			String result = facade.cadastrarLivro(livro);
+			System.out.println("");
+			System.out.println(result);
+			System.out.println("");
+		} else {
+			System.out.println("");
+			System.out.println(resultValidation);
+			System.out.println("Livro não cadastrado.");
+			System.out.println("");
+		}
 		menu();
 
 	}
@@ -223,10 +229,28 @@ public class OperationsView {
 	private void excluirLivroPeloId() {
 
 		String id;
+		List<Book> livros = new ArrayList<Book>();
+
+		livros = facade.pesquisarLivros();
+
+		for (Book livro : livros) {
+			System.out.println("");
+			System.out.println("ID: " + livro.getId());
+			System.out.println("Titulo: " + livro.getTitulo());
+		}
+
 		System.out.println("");
-		System.out.println("Qual titulo do livro deseja Excluir?");
-		System.out.println("");
+		System.out.print("Digite o ID do livro que deseja Excluir: ");
 		id = scanner.nextLine();
+		String result = BookValidationUtil.validarDeletar(id);
+		if (result == "sucesso") {
+			int idDeletar = Integer.parseInt(id);
+			String deleteMessage = facade.removerLivro(idDeletar);
+
+		} else {
+			System.out.println("");
+			System.out.println(result);
+		}
 
 	}
 
@@ -262,6 +286,7 @@ public class OperationsView {
 					System.out.println("");
 				}
 			}
+
 		}
 
 		List<Book> livros = new ArrayList<Book>();
@@ -272,27 +297,27 @@ public class OperationsView {
 			break;
 		case 2:
 			System.out.println("");
-			System.out.print("Digite o ID do livro");
+			System.out.print("Digite o ID do livro: ");
 
 			// livros = facade.pesquisarLivroPeloId(id);
 			break;
 		case 3:
 			System.out.println("");
-			System.out.print("Digite o titulo do livro");
+			System.out.print("Digite o titulo do livro: ");
 			String titulo = scanner.nextLine();
 			livros = facade.pesquisarLivroPeloTitulo(titulo);
 			break;
 		case 4:
 			System.out.println("");
-			System.out.print("Digite o autor do livro");
+			System.out.print("Digite o autor do livro: ");
 			String autor = scanner.nextLine();
 			livros = facade.pesquisarLivroPeloAutor(autor);
 			break;
 		case 5:
 			System.out.println("");
-			System.out.print("Digite o autor do livro");
+			System.out.print("Digite a editora do livro: ");
 			String editora = scanner.nextLine();
-			livros = facade.pesquisarLivroPeloAutor(editora);
+			livros = facade.pesquisarLivroPelaEditora(editora);
 			break;
 		case 6:
 			// listarPeloAno();
@@ -300,19 +325,29 @@ public class OperationsView {
 		default:
 			System.out.println("opção inválida! ");
 			break;
-		}
-		for (Book livro : livros) {
-			System.out.println("");
-			System.out.println("Titulo: " + livro.getTitulo());
-			System.out.println("Autor: " + livro.getAutor());
-			System.out.println("Editora: " + livro.getEditora());
-			System.out.println("Ano: " + livro.getAno());
-			System.out.println("Tipo: " + livro.getTipo());
-			System.out.println("URL: " + livro.getUrl());
-			System.out.println("Tamanho: " + livro.getTamanho());
 
-			menu();
 		}
+
+		if (livros.isEmpty()) {
+			System.out.println("");
+			System.out.println("livro não encontrado!");
+			System.out.println("");
+		} else {
+			for (Book livro : livros) {
+
+				System.out.println("");
+				System.out.println("ID: " + livro.getId());
+				System.out.println("Titulo: " + livro.getTitulo());
+				System.out.println("Autor: " + livro.getAutor());
+				System.out.println("Editora: " + livro.getEditora());
+				System.out.println("Ano: " + livro.getAno());
+				System.out.println("Tipo: " + livro.getTipo());
+				System.out.println("URL: " + livro.getUrl());
+				System.out.println("Tamanho: " + livro.getTamanho());
+			}
+		}
+
+		menu();
 
 	}
 
