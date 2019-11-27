@@ -19,7 +19,13 @@ public class OperationsView {
 
 	BookValidationUtil bookUtil = new BookValidationUtil();
 
-	Book livro = new Book();
+	String titulo = null;
+	String autor = null;
+	String editora = null;
+	String ano = null;
+	String tipo = null;
+	String url = null;
+	String tamanho = null;
 
 	public void menu() {
 		String value;
@@ -64,11 +70,9 @@ public class OperationsView {
 			break;
 		case 2:
 			excluirLivroPeloId();
-
 			break;
 		case 3:
-			// exibirEdicaoDeLivro();
-			// menu();
+			exibirEdicaoDeLivro();
 			break;
 		case 4:
 			exibirTipoLista();
@@ -76,7 +80,6 @@ public class OperationsView {
 			sairDoSistema();
 			break;
 		default:
-
 			break;
 		}
 
@@ -84,11 +87,14 @@ public class OperationsView {
 
 	public void exibirMenuAdicionar() {
 
+		Book livro = new Book();
+
 		String value;
 		boolean resultado = false;
 		int opcaoAdicionar = 0;
 
 		while (!resultado) {
+
 			System.out.println("");
 			System.out.println("---------------------------------");
 			System.out.println("1- Adicionar Titulo");
@@ -108,7 +114,6 @@ public class OperationsView {
 			if (validacao == true) {
 				opcaoAdicionar = Integer.parseInt(value);
 				if (opcaoAdicionar >= 1 && opcaoAdicionar <= 8) {
-					menuAdicionar(opcaoAdicionar);
 					resultado = true;
 				} else {
 					System.out.println("");
@@ -123,28 +128,25 @@ public class OperationsView {
 		switch (opcaoAdicionar) {
 		case 1:
 			System.out.print("Digite o titulo do livro:");
-			String titulo = scanner.nextLine();
-			livro.setTitulo(titulo);
+			titulo = scanner.nextLine();
 			System.out.println("");
 			System.out.println("Titulo adicionado com sucesso!");
-			System.out.println("");	
+			System.out.println("");
 			exibirMenuAdicionar();
 
 			break;
 		case 2:
 			System.out.print("Digite o nome do Autor: ");
-			String autor = scanner.nextLine();
-			livro.setAutor(autor);
+			autor = scanner.nextLine();
 			System.out.println("");
 			System.out.println("Autor adicionado com sucesso!");
-			System.out.println("");		
+			System.out.println("");
 			exibirMenuAdicionar();
 
 			break;
 		case 3:
 			System.out.print("Digite o nome da Editora: ");
-			String editora = scanner.nextLine();
-			livro.setEditora(editora);
+			editora = scanner.nextLine();
 			System.out.println("");
 			System.out.println("Editora adicionada com sucesso!");
 			System.out.println("");
@@ -153,8 +155,7 @@ public class OperationsView {
 			break;
 		case 4:
 			System.out.print("Digite o ano de publicação: ");
-			String ano = scanner.nextLine();
-			livro.setAno(ano);
+			ano = scanner.nextLine();
 			System.out.println("");
 			System.out.println("Ano adicionado com sucesso!");
 			System.out.println("");
@@ -163,8 +164,7 @@ public class OperationsView {
 			break;
 		case 5:
 			System.out.print("Informe o URL: ");
-			String url = scanner.nextLine();
-			livro.setUrl(url);
+			url = scanner.nextLine();
 			System.out.println("");
 			System.out.println("URL adicionado com sucesso!");
 			System.out.println("");
@@ -173,8 +173,7 @@ public class OperationsView {
 			break;
 		case 6:
 			System.out.print("Informe o tamanho do livro em MB: ");
-			String tamanho = scanner.nextLine();
-			livro.setTamanho(tamanho);
+			tamanho = scanner.nextLine();
 			System.out.println("");
 			System.out.println("tamanho adicionado com sucesso!");
 			System.out.println("");
@@ -187,8 +186,7 @@ public class OperationsView {
 			System.out.println("1- Livro Fisico");
 			System.out.println("2- eBook");
 			System.out.println("------------------------");
-			String tipo = scanner.nextLine();
-			livro.setTipo(tipo);
+			tipo = scanner.nextLine();
 			System.out.println("");
 			System.out.println("Tipo adicionado com sucesso!");
 			System.out.println("");
@@ -196,7 +194,13 @@ public class OperationsView {
 
 			break;
 		case 8:
-
+			livro.setTitulo(titulo);
+			livro.setAutor(autor);
+			livro.setEditora(editora);
+			livro.setAno(ano);
+			livro.setUrl(url);
+			livro.setTamanho(tamanho);
+			livro.setTipo(tipo);
 			verificaECadastraLivro(livro);
 			break;
 		default:
@@ -204,13 +208,9 @@ public class OperationsView {
 		}
 	}
 
-	private void menuAdicionar(int opcoesAdicionar) {
-
-	}
-
 	private void verificaECadastraLivro(Book livro) {
 		String resultValidation = BookValidationUtil.validarCamposVazios(livro);
-		
+
 		if (resultValidation == "sucesso") {
 			String result = facade.cadastrarLivro(livro);
 			System.out.println("");
@@ -222,8 +222,14 @@ public class OperationsView {
 			System.out.println("Livro não cadastrado.");
 			System.out.println("");
 		}
+		titulo = null;
+		autor = null;
+		editora = null;
+		ano = null;
+		tipo = null;
+		url = null;
+		tamanho = null;
 		menu();
-
 	}
 
 	private void excluirLivroPeloId() {
@@ -242,15 +248,54 @@ public class OperationsView {
 		System.out.println("");
 		System.out.print("Digite o ID do livro que deseja Excluir: ");
 		id = scanner.nextLine();
-		String result = BookValidationUtil.validarDeletar(id);
+		String result = BookValidationUtil.validarId(id);
 		if (result == "sucesso") {
 			int idDeletar = Integer.parseInt(id);
-			String deleteMessage = facade.removerLivro(idDeletar);
+			for (int i = 0; i < livros.size(); i++) {
+				if (livros.get(i).getId() == idDeletar) {
+					String deleteMessage = facade.removerLivro(idDeletar);
+					if (deleteMessage.equalsIgnoreCase("Deletado com sucesso!")) {
+						System.out.println("");
+						System.out.println(deleteMessage);
+						break;
+					} else {
+						System.out.println("ID Inválido!");
+					}
+				}
+			}
 
 		} else {
 			System.out.println("");
 			System.out.println(result);
 		}
+		menu();
+
+	}
+
+	private void exibirEdicaoDeLivro() {
+
+		List<Book> livros = new ArrayList<Book>();
+		String id;
+
+		livros = facade.pesquisarLivros();
+
+		for (Book livro : livros) {
+			System.out.println("");
+			System.out.println("ID: " + livro.getId());
+			System.out.println("Titulo: " + livro.getTitulo());
+		}
+
+		System.out.println("Digite o ID do livro que deseja editar: ");
+		id = scanner.nextLine();
+		String result = bookUtil.validarId(id);
+		if (result == "sucesso") {
+			int idAlterar = Integer.parseInt(id);
+
+		} else {
+			System.out.println("");
+			System.out.println(result);
+		}
+			
 
 	}
 
@@ -298,6 +343,13 @@ public class OperationsView {
 		case 2:
 			System.out.println("");
 			System.out.print("Digite o ID do livro: ");
+			String listarLivroId;
+			listarLivroId = scanner.nextLine();
+			String result = bookUtil.validarId(listarLivroId);
+			if (result == "sucesso") {
+				int idAlterar = Integer.parseInt(listarLivroId);
+				livros = facade.pesquisarLivroPeloId(idAlterar);
+			}
 
 			// livros = facade.pesquisarLivroPeloId(id);
 			break;

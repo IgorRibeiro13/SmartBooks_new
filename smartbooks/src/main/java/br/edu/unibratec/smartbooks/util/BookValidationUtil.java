@@ -65,7 +65,7 @@ public class BookValidationUtil {
 
 	}
 
-	public static String validarDeletar(String id) {
+	public static String validarId(String id) {
 
 		try {
 			int numero = Integer.parseInt(id);

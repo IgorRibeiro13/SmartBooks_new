@@ -66,9 +66,7 @@ public class BookController implements Operations<Book> {
 	@Override
 	public String deletar(int id) {
 		return dao.deletar(id);
-		
-		
-		
+	
 
 	}
 
